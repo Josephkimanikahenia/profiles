@@ -5,20 +5,20 @@ from django.contrib.auth.models import BaseUserManager
 
 
 class UserProfileManager(BaseUserManager):
-    """manager for user profiles"""
+    """Manager for user profiles"""
 
     def create_user(self, email, name, password=None):
-        """Create a name user profile"""
+        """Create a new user profile"""
         if not email:
-            raise ValueError('user must have an email address')
+            raise ValueError('Users must have an email address')
 
-            email = self.mormalize_email(email)
-            user = self.model(email=email, name=name)
+        email = self.normalize_email(email)
+        user = self.model(email=email, name=name,)
 
-            user.set_password(password)
-            user.save(using=self._db)
+        user.set_password(password)
+        user.save(using=self._db)
 
-            return user
+        return user
 
     def create_superuser(self, email, name, password):
         """Create and save a new superuser with given details"""
@@ -29,10 +29,8 @@ class UserProfileManager(BaseUserManager):
         user.save(using=self._db)
 
         return user
-
-
 class UserProfile(AbstractBaseUser, PermissionsMixin):
-    """Database model for user in the system"""
+    """Database model for users in the system"""
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
@@ -41,7 +39,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     objects = UserProfileManager()
 
     USERNAME_FIELD = 'email'
-    REQUIED_FIELDS = ['name']
+    REQUIRED_FIELDS = ['name']
 
     def get_full_name(self):
         """Retrieve full name of user"""
@@ -49,7 +47,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         """Retrieve shot name of user"""
-        return self.NAME
+        return self.name
 
     def __str__(self):
         """Return string representation of our user"""

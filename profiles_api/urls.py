@@ -3,10 +3,10 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 from profiles_api import views
-
+"""below weregister our ViewSet"""
 router = DefaultRouter()
-router.register('helllo-viewset', views.HelloViewSet, base_name='Hello=viewset')
-
+router.register('hello-viewset', views.HelloViewSet, base_name='Hello=viewset')
+router.register('profile', views.UserProfileViewSet)
 
 urlpatterns = [
     path('hello-view/', views.HelloApiView.as_view()),
